@@ -6,8 +6,8 @@ const pokemonImage = document.querySelector('.pokemon-image');
 const pokemonForm = document.querySelector('.form');
 const pokemonInput = document.querySelector('.input-search');
 
-const btnPrev = document.querySelector('.btnPrev');
-const btnNext = document.querySelector('.btnNext');
+const btnPrev = document.querySelector('.btn-prev');
+const btnNext = document.querySelector('.btn-next');
 let PokemonID = 1;
 
 //async - usado para chaamdas assincronas, permitindo que utilize o metodo await
@@ -31,8 +31,9 @@ const renderPokemon = async (pokemon) => {
         pokemonNumber.innerHTML = data.id;
         pokemonImage.src = data['sprites']['versions']['generation-v']['black-white']['animated']['front_default'];
     //vai até o 649
+        PokemonID = data.id;
     } else {
-        pokemonImage.computedStyleMap.display = 'none';
+        pokemonImage.style.display = 'none';
         pokemonName.innerHTML = 'Not Found!';
         pokemonNumber.innerHTML = '';
     }
@@ -46,12 +47,20 @@ pokemonForm.addEventListener('submit', (event) =>{
 })
 
 btnPrev.addEventListener('click', () => {
-    alert('prev clicked!');
+    if(PokemonID > 1) {
+        PokemonID -= 1;
+        renderPokemon(PokemonID)
+    }
 });
 
 btnNext.addEventListener('click', () => {
-    PokemonID += 1;
-    renderPokemon(PokemonID);
+    if(PokemonID < 649){
+        PokemonID +=1;
+        renderPokemon(PokemonID)
+    } else {
+        pokemonName.innerHTML = 'Only Gen. V!';
+        pokemonNumber.innerHTML = '';
+    }
 });
 
 renderPokemon('pokemonID');
